@@ -19,8 +19,7 @@ export const createJob = async (req, res) => {
 };
 
 export const getJobs = async (req, res) => {
-  const { keyword, location, category, type, minSalary, maxSalary, userId } =
-    req.query;
+  const { keyword, location, category, type, minSalary, maxSalary, userId } = req.query;
   const query = {
     isClosed: false,
     ...(keyword && { title: { $regex: keyword, $options: "i" } }),
@@ -42,25 +41,18 @@ export const getJobs = async (req, res) => {
     }
   }
   try {
-    const jobs = await Job.find(query).populate(
-      "company",
-      "name companyName companyLogo",
-    );
+    const jobs = await Job.find(query).populate("company", "name companyName companyLogo");
 
     let savedJobIds = [];
     let appliedJobStatusMap = {};
 
     if (userId) {
       // saved jobs
-      const savedJobs = await SavedJob.find({ jobseeker: userId }).select(
-        "job",
-      );
+      const savedJobs = await SavedJob.find({ jobseeker: userId }).select("job");
       savedJobIds = savedJobs.map((s) => String(s.job));
 
       // application
-      const applications = await Application.find({ applicant: userId }).select(
-        "job status",
-      );
+      const applications = await Application.find({ applicant: userId }).select("job status");
       applications.forEach((app) => {
         appliedJobStatusMap[String(app.job)] = app.status;
       });
@@ -126,24 +118,22 @@ export const getJobById = async (req, res) => {
       "name companyName companyLogo",
     );
 
-      if (!job) {
-       return res.status(404).json({ message: "Job not found" });
-      } 
-      let applicationStatus = null;
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+    let applicationStatus = null;
 
-      if (userId) {
-          const application = await Application.findOne({
-              job: job._id,
-              applicant: userId,
-
-          }).select("status");
-          if (application) {
-              applicationStatus = application.status;
-          }
+    if (userId) {
+      const application = await Application.findOne({
+        job: job._id,
+        applicant: userId,
+      }).select("status");
+      if (application) {
+        applicationStatus = application.status;
       }
-      
-      res.json({ ...job.toObject(), applicationStatus });
+    }
 
+    res.json({ ...job.toObject(), applicationStatus });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -151,16 +141,16 @@ export const getJobById = async (req, res) => {
 
 // update a job ( employer only)
 export const updateJob = async (req, res) => {
-    try {
-        const job = await Job.findById(req.params.id);
-        if (!job) return res.status(404).json({ message: "Job not found" });
+  try {
+    const job = await Job.findById(req.params.id);
+    if (!job) return res.status(404).json({ message: "Job not found" });
 
-        if (job.company.toString() !== req.user._id.toString()) {
-            return res.status(403).json({ message: "Not Authorized to update this job" });
-        }
-        Object.assign(job, req.body);
-        const updated = await job.save(); 
-        res.json(updated);
+    if (job.company.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Not Authorized to update this job" });
+    }
+    Object.assign(job, req.body);
+    const updated = await job.save();
+    res.json(updated);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -170,6 +160,14 @@ export const updateJob = async (req, res) => {
 
 export const deleteJob = async (req, res) => {
   try {
+    const job = await Job.findById(req.params.id);
+    if (!job) return res.status().json({ message: "Job not found" });
+    if (job.company.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Not authorized to delete this job" });
+    }
+    
+    await job.deleteOne();
+    res.json({ message: "Job Delted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -179,6 +177,14 @@ export const deleteJob = async (req, res) => {
 
 export const toggleCloseJob = async (req, res) => {
   try {
+    const job = await Job.findById(req.params.id);
+    if (!job) return res.status(404).json({ message: "Job not found" });
+    if (job.company.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Not authorized to close this job" });
+    }
+    job.isClosed = !job.isClosed;
+    await job.save();
+    res.json({ message: "Job marked as closed" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

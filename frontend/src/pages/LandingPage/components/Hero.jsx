@@ -72,7 +72,7 @@ const Hero = () => {
           </motion.div>
 
                   {/* Stats */}
-          <motion.div
+          {/*<motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
@@ -93,7 +93,7 @@ const Hero = () => {
                 <div className="text-sm text-gray-600 font-medium">{stat.label}</div>
               </motion.div>
             ))}
-          </motion.div>
+          </motion.div>*/}
         </div>
       </div>
       {/* Subtle BackGround ELements     */}

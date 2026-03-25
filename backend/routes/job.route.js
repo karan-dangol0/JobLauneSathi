@@ -1,12 +1,12 @@
 import express from "express";
 import {
-    createJob,
-    getJobs,
-    getJobById,
-    updateJob,
-    deleteJob,
-    toggleCloseJob,
-    getJobsEmployer
+  createJob,
+  getJobs,
+  getJobById,
+  updateJob,
+  deleteJob,
+  toggleCloseJob,
+  getJobsEmployer,
 } from "../controllers/job.controller.js";
 import { protect } from "../middlewares/auth.middleware.js";
 
@@ -17,4 +17,4 @@ router.route("/get-jobs-employer").get(protect, getJobsEmployer);
 router.route("/:id").get(getJobById).put(protect, updateJob).delete(protect, deleteJob);
 router.put("/:id/toggle-close", protect, toggleCloseJob);
 
-export default router;  
+export default router;
