@@ -7,11 +7,12 @@ import connectDb from "./config/db.js";
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
 import jobRoutes from "./routes/job.route.js";
+import applicationRoutes from "./routes/application.route.js";
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const app = express();
+const app = express();   
 
 // middleware to handle cors
 
@@ -26,6 +27,7 @@ app.use(cors({
 // connect Database
 connectDb();
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // middleware
 
 app.use(express.json());
@@ -34,10 +36,10 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/jobs", jobRoutes);
+app.use("/api/applications", applicationRoutes);
 // Serve uploads folder
 //
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.listen(process.env.PORT || 4000, ()=> {
     console.log(`Server running on port ${process.env.PORT || 4000}`);
