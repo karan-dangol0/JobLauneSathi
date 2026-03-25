@@ -8,6 +8,8 @@ import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
 import jobRoutes from "./routes/job.route.js";
 import applicationRoutes from "./routes/application.route.js";
+import savedJobsRoutes from "./routes/savedJob.route.js";
+import analyticsRoutes from "./routes/analytics.route.js";
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -37,6 +39,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/applications", applicationRoutes);
+app.use("/api/save-jobs", savedJobsRoutes);
+app.use("/api/analytics", analyticsRoutes);
 // Serve uploads folder
 //
 
