@@ -15,10 +15,11 @@ import ManageJobs from "./pages/Employer/ManageJobs";
 import ApplicationViewer from "./pages/Employer/ApplicationViewer";
 import EmployerProfilePage from "./pages/Employer/EmployerProfilePage";
 import JobPostingForm from "./pages/Employer/JobPostingForm";
+import { AuthProvider } from "./context/AuthContext";
 
 const App = () => {
   return (
-    <div className="">
+    <AuthProvider>
       <Router>
         <Routes>
           {/* Public routes */}
@@ -54,7 +55,7 @@ const App = () => {
           },
         }}
       />
-    </div>
+    </AuthProvider>
   );
 };
 

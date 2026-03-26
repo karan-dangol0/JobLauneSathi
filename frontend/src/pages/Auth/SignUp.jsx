@@ -15,8 +15,13 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { validateEmail, validatePassword, validateAvatar } from "../../utils/helper";
+import uploadImage from "./../../utils/uploadImage";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apipath";
+import { useAuth } from "../../context/AuthContext";
 
 const Signup = () => {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -135,7 +140,36 @@ const Signup = () => {
     if (!validateForm()) return;
     setFormState((prev) => ({ ...prev, loading: true }));
     try {
-      //
+      let avatarUrl = "";
+      // upload image if present
+      if (formData.avatar) {
+        const imgUploadRes = await uploadImage(formData.avatar);
+        avatarUrl = imgUploadRes.imageUrl || "";
+
+      }
+        const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+          name: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role,
+          avatar: avatarUrl || ""
+        });
+        // handle successful registration 
+        setFormState((prev) => ({
+          ...prev,
+          loading: false,
+          success: true,
+          errors: {},
+        }));
+        const { token } = response.data;
+        if (token) {
+          login(response.data, token);
+          
+          // redirect based on role
+          setTimeout(() => {
+            window.location.href = formData.role === "employer" ? "employer-dashboard" : "/find-jobs"; 
+          }, );
+        }
     } catch (error) {
       console.log("Error", error);
       setFormState((prev) => ({
