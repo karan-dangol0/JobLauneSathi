@@ -1,0 +1,19 @@
+meta {
+  name: Save Job
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/save-jobs/{{jobId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Saves a job for the authenticated user.
+}

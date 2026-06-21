@@ -1,0 +1,29 @@
+meta {
+  name: Delete Resume
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{baseUrl}}/api/user/resume
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "resumeUrl": "http://localhost:8000/uploads/example.pdf"
+  }
+}
+
+docs {
+  Deletes the current jobseeker's resume.
+}

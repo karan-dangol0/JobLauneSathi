@@ -1,0 +1,32 @@
+meta {
+  name: Update Application Status
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/api/applications/{{applicationId}}/status
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "status": "In Review"
+  }
+}
+
+docs {
+  Updates application status.
+
+  Valid values: `Applied`, `In Review`, `Rejected`, `Accepted`.
+  Requires the authenticated employer to own the related job.
+}

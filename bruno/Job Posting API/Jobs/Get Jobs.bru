@@ -1,0 +1,28 @@
+meta {
+  name: Get Jobs
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/jobs
+  body: none
+  auth: none
+}
+
+params:query {
+  keyword:
+  location:
+  category:
+  type:
+  minSalary:
+  maxSalary:
+  userId:
+}
+
+docs {
+  Lists open jobs.
+
+  Optional query params:
+  `keyword`, `location`, `category`, `type`, `minSalary`, `maxSalary`, `userId`.
+}

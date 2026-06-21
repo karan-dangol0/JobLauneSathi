@@ -1,0 +1,19 @@
+meta {
+  name: Get Employer Jobs
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/jobs/get-jobs-employer
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Lists jobs created by the authenticated employer.
+}

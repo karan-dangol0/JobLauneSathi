@@ -1,0 +1,23 @@
+meta {
+  name: Get Employer Overview
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/analytics/overview
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+vars:pre-request {
+  baseUrl: 
+}
+
+docs {
+  Gets dashboard analytics for the authenticated employer.
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Get Applications For Job
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/applications/job/{{jobId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Lists applications for a job.
+
+  Requires the authenticated employer to own the job.
+}

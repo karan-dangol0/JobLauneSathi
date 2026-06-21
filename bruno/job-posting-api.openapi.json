@@ -1,0 +1,472 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Job Posting API",
+    "version": "1.0.0",
+    "description": "OpenAPI documentation for the MERN job posting backend. Import this file into Bruno using Import Collection > OpenAPI."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Local server used by the frontend"
+    },
+    {
+      "url": "http://localhost:4000",
+      "description": "Backend default when PORT is not set"
+    }
+  ],
+  "tags": [
+    { "name": "Auth" },
+    { "name": "Users" },
+    { "name": "Jobs" },
+    { "name": "Applications" },
+    { "name": "Saved Jobs" },
+    { "name": "Analytics" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "RegisterRequest": {
+        "type": "object",
+        "required": ["name", "email", "password", "role"],
+        "properties": {
+          "name": { "type": "string", "example": "Demo Employer" },
+          "email": { "type": "string", "format": "email", "example": "employer@example.com" },
+          "password": { "type": "string", "example": "Password123" },
+          "role": { "type": "string", "enum": ["jobseeker", "employer"], "example": "employer" },
+          "avatar": { "type": "string", "example": "" }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": { "type": "string", "format": "email", "example": "employer@example.com" },
+          "password": { "type": "string", "example": "Password123" }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "role": { "type": "string", "enum": ["jobseeker", "employer"] },
+          "token": { "type": "string" },
+          "avatar": { "type": "string" },
+          "companyName": { "type": "string" },
+          "companyDescription": { "type": "string" },
+          "companyLogo": { "type": "string" },
+          "resume": { "type": "string" }
+        }
+      },
+      "ProfileUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "example": "Demo Employer" },
+          "avatar": { "type": "string", "example": "" },
+          "companyName": { "type": "string", "example": "Demo Company" },
+          "companyDescription": { "type": "string", "example": "A company hiring great people." },
+          "companyLogo": { "type": "string", "example": "" },
+          "resume": { "type": "string", "example": "" }
+        }
+      },
+      "JobRequest": {
+        "type": "object",
+        "required": ["title", "description", "requirements"],
+        "properties": {
+          "title": { "type": "string", "example": "Frontend Developer" },
+          "description": { "type": "string", "example": "Build and maintain React user interfaces." },
+          "requirements": { "type": "string", "example": "React, JavaScript, REST APIs" },
+          "location": { "type": "string", "example": "Kathmandu" },
+          "category": { "type": "string", "example": "Engineering" },
+          "type": { "type": "string", "enum": ["Remote", "Full-Time", "Part-Time", "Internship", "Contract"], "example": "Full-Time" },
+          "salaryMin": { "type": "number", "example": 50000 },
+          "salaryMax": { "type": "number", "example": 90000 }
+        }
+      },
+      "StatusUpdateRequest": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": { "type": "string", "enum": ["Applied", "In Review", "Rejected", "Accepted"], "example": "In Review" }
+        }
+      },
+      "MessageResponse": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RegisterRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authenticated user",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get current user",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Current user" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/api/auth/upload-image": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Upload image or PDF",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Uploaded file URL" }
+        }
+      }
+    },
+    "/api/user/profile": {
+      "put": {
+        "tags": ["Users"],
+        "summary": "Update current user profile",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ProfileUpdateRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Updated profile" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/api/user/resume": {
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete current jobseeker resume",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "resumeUrl": { "type": "string", "example": "http://localhost:8000/uploads/example.pdf" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Resume deleted" }
+        }
+      }
+    },
+    "/api/user/{userId}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get public user profile",
+        "parameters": [
+          { "name": "userId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Public profile" },
+          "404": { "description": "User not found" }
+        }
+      }
+    },
+    "/api/jobs": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "List open jobs",
+        "parameters": [
+          { "name": "keyword", "in": "query", "schema": { "type": "string" } },
+          { "name": "location", "in": "query", "schema": { "type": "string" } },
+          { "name": "category", "in": "query", "schema": { "type": "string" } },
+          { "name": "type", "in": "query", "schema": { "type": "string" } },
+          { "name": "minSalary", "in": "query", "schema": { "type": "number" } },
+          { "name": "maxSalary", "in": "query", "schema": { "type": "number" } },
+          { "name": "userId", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Job list" }
+        }
+      },
+      "post": {
+        "tags": ["Jobs"],
+        "summary": "Create job",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/JobRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created job" },
+          "403": { "description": "Only employers can post jobs" }
+        }
+      }
+    },
+    "/api/jobs/get-jobs-employer": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "List authenticated employer jobs",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Employer job list" },
+          "403": { "description": "Access denied" }
+        }
+      }
+    },
+    "/api/jobs/{jobId}": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Get job by id",
+        "parameters": [
+          { "name": "jobId", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "userId", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Job detail" },
+          "404": { "description": "Job not found" }
+        }
+      },
+      "put": {
+        "tags": ["Jobs"],
+        "summary": "Update job",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "jobId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/JobRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Updated job" },
+          "403": { "description": "Not authorized" }
+        }
+      },
+      "delete": {
+        "tags": ["Jobs"],
+        "summary": "Delete job",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "jobId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Deleted job" },
+          "403": { "description": "Not authorized" }
+        }
+      }
+    },
+    "/api/jobs/{jobId}/toggle-close": {
+      "put": {
+        "tags": ["Jobs"],
+        "summary": "Toggle job closed state",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "jobId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Toggled job closed state" }
+        }
+      }
+    },
+    "/api/applications/{jobId}": {
+      "post": {
+        "tags": ["Applications"],
+        "summary": "Apply to job",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "jobId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "201": { "description": "Application created" },
+          "403": { "description": "Only job seekers can apply" }
+        }
+      }
+    },
+    "/api/applications/my": {
+      "get": {
+        "tags": ["Applications"],
+        "summary": "List my applications",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Application list" }
+        }
+      }
+    },
+    "/api/applications/job/{jobId}": {
+      "get": {
+        "tags": ["Applications"],
+        "summary": "List applications for job",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "jobId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Applications for job" },
+          "403": { "description": "Not authorized" }
+        }
+      }
+    },
+    "/api/applications/{applicationId}": {
+      "get": {
+        "tags": ["Applications"],
+        "summary": "Get application by id",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "applicationId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Application detail" }
+        }
+      }
+    },
+    "/api/applications/{applicationId}/status": {
+      "put": {
+        "tags": ["Applications"],
+        "summary": "Update application status",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "applicationId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/StatusUpdateRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Status updated" }
+        }
+      }
+    },
+    "/api/save-jobs/{jobId}": {
+      "post": {
+        "tags": ["Saved Jobs"],
+        "summary": "Save job",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "jobId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "201": { "description": "Job saved" }
+        }
+      },
+      "delete": {
+        "tags": ["Saved Jobs"],
+        "summary": "Unsave job",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "jobId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Job unsaved" }
+        }
+      }
+    },
+    "/api/save-jobs/my": {
+      "get": {
+        "tags": ["Saved Jobs"],
+        "summary": "List my saved jobs",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Saved job list" }
+        }
+      }
+    },
+    "/api/analytics/overview": {
+      "get": {
+        "tags": ["Analytics"],
+        "summary": "Get employer analytics overview",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Employer analytics" },
+          "403": { "description": "Access denied" }
+        }
+      }
+    }
+  }
+}

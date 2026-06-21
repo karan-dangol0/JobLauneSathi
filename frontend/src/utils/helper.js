@@ -23,12 +23,10 @@ export const validateAvatar = (file) => {
   if (!allowedTypes.includes(file.type)) {
     return "Avatar must be a JPG, JPEG, PNG format";
   }
-    
-    const maxSize = 5 * 1024 * 1024; // 5mb
-    if (file.size > maxSize) {
-        return "Avatar must be less than 5MB";
-    }
-    return ""; 
+
+  const maxSize = 5 * 1024 * 1024; // 5mb
+  if (file.size > maxSize) {
+    return "Avatar must be less than 5MB";
+  }
+  return "";
 };
-
-

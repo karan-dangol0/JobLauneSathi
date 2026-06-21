@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   Files,
   Plus,
+  FileUser,
 } from "lucide-react";
 
 export const jobSeekerFeatures = [
@@ -88,6 +89,7 @@ export const NAVIGATION_MENU = [
     name: "Company Profile",
     icon: Building2,
   },
+ 
 ];
 
 export const CATEGORIES = [

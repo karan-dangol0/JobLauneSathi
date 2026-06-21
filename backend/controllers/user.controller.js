@@ -1,11 +1,15 @@
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 import User from "../models/User.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const updateProfile = async (req, res) => {
   try {
     const { name, avatar, companyName, companyDescription, companyLogo, resume } = req.body;
-    const user = await User.findOne(req.user._id);
+    const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
     user.name = name || user.name;
@@ -24,6 +28,7 @@ export const updateProfile = async (req, res) => {
     res.json({
       _id: user._id, 
       name: user.name, 
+      email: user.email,
       avatar: user.avatar, 
       role: user.role, 
       companyName: user.companyName,

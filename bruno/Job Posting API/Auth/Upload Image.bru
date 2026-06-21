@@ -1,0 +1,22 @@
+meta {
+  name: Upload Image
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/auth/upload-image
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  image: @file()
+}
+
+docs {
+  Uploads an image/PDF using field name `image`.
+
+  The backend currently allows image/jpeg, image/png, image/jpg, and application/pdf.
+  Response shape: `{ "imageUrl": "..." }`.
+}

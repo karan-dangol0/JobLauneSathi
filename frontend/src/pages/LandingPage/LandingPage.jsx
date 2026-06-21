@@ -8,10 +8,10 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen">
       <Header />
-    <Hero /> 
-    <Features />
-    {/* <Analytics /> */}
-  <Footer />
+      <Hero />
+      <Features />
+      <Analytics />
+      <Footer />
     </div>
   );
 };

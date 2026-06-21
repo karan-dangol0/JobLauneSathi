@@ -1,0 +1,28 @@
+meta {
+  name: Login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/auth/login
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "test@test.test",
+    "password": "test"
+  }
+}
+
+docs {
+  Authenticates a user.
+  
+  Copy the returned `token` into the `token` environment variable.
+}

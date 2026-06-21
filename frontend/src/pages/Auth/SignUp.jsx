@@ -14,7 +14,11 @@ import {
   Loader,
 } from "lucide-react";
 import { useState } from "react";
-import { validateEmail, validatePassword, validateAvatar } from "../../utils/helper";
+import {
+  validateEmail,
+  validatePassword,
+  validateAvatar,
+} from "../../utils/helper";
 import uploadImage from "./../../utils/uploadImage";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apipath";
@@ -145,38 +149,40 @@ const Signup = () => {
       if (formData.avatar) {
         const imgUploadRes = await uploadImage(formData.avatar);
         avatarUrl = imgUploadRes.imageUrl || "";
-
       }
-        const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
-          name: formData.fullName,
-          email: formData.email,
-          password: formData.password,
-          role: formData.role,
-          avatar: avatarUrl || ""
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+        name: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+        avatar: avatarUrl || "",
+      });
+      // handle successful registration
+      setFormState((prev) => ({
+        ...prev,
+        loading: false,
+        success: true,
+        errors: {},
+      }));
+      const { token } = response.data;
+      if (token) {
+        login(response.data, token);
+
+        // redirect based on role
+        setTimeout(() => {
+          window.location.href =
+            formData.role === "employer" ? "employer-dashboard" : "/find-jobs";
         });
-        // handle successful registration 
-        setFormState((prev) => ({
-          ...prev,
-          loading: false,
-          success: true,
-          errors: {},
-        }));
-        const { token } = response.data;
-        if (token) {
-          login(response.data, token);
-          
-          // redirect based on role
-          setTimeout(() => {
-            window.location.href = formData.role === "employer" ? "employer-dashboard" : "/find-jobs"; 
-          }, );
-        }
+      }
     } catch (error) {
       console.log("Error", error);
       setFormState((prev) => ({
         ...prev,
         loading: false,
         errors: {
-          submit: error.response?.data?.message || "Registration failed. Please try again.",
+          submit:
+            error.response?.data?.message ||
+            "Registration failed. Please try again.",
         },
       }));
     }
@@ -198,10 +204,14 @@ const Signup = () => {
           className="bg-white rounded-xl shadow-lg max-w-md w-full text-center p-8"
         >
           <CheckCircle className="size-16 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mx-auto mb-4">Account Created!</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mx-auto mb-4">
+            Account Created!
+          </h2>
           <p className="text-gray-600 mb-4">You can now successfully log in.</p>
           <div className="animate-spin size-6 border-2 border-blue-600 border-t-transparent rounded-full mx-auto" />
-          <p className="text-sm text-gray-500 mt-2">Redirecting to your dashboard</p>
+          <p className="text-sm text-gray-500 mt-2">
+            Redirecting to your dashboard
+          </p>
         </motion.div>
       </div>
     );
@@ -215,7 +225,9 @@ const Signup = () => {
         className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full"
       >
         <div className="text-center mb-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-2">Create Account</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-2">
+            Create Account
+          </h2>
           <p className="text-sm text-gray-600">
             Join thousands of professionals finding their dream job.
           </p>
@@ -223,7 +235,10 @@ const Signup = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor=""
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Full Name *
             </label>
             <div className="relative">
@@ -247,7 +262,10 @@ const Signup = () => {
           </div>
           {/* Email */}
           <div>
-            <label htmlFor="" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor=""
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Email Address*
             </label>
             <div className="relative">
@@ -273,7 +291,10 @@ const Signup = () => {
           {/* Password */}
 
           <div>
-            <label htmlFor="" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor=""
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Password *
             </label>
 
@@ -315,7 +336,10 @@ const Signup = () => {
           {/* Avatar Upload */}
 
           <div>
-            <label htmlFor="" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor=""
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Profile Picture (optional)
             </label>
             <div className="flex items-center space-x-4">
@@ -324,7 +348,11 @@ const Signup = () => {
               "
               >
                 {formState.avatarPreview ? (
-                  <img src={formState.avatarPreview} alt="" className="size-full object-cover" />
+                  <img
+                    src={formState.avatarPreview}
+                    alt=""
+                    className="size-full object-cover"
+                  />
                 ) : (
                   <User className="size-8 text-gray-400" />
                 )}
@@ -360,7 +388,10 @@ const Signup = () => {
           {/* Role Selection  */}
 
           <div>
-            <label htmlFor="" className="block text-sm font-medium text-gray-700 mb-3">
+            <label
+              htmlFor=""
+              className="block text-sm font-medium text-gray-700 mb-3"
+            >
               I am a *
             </label>
             <div className="grid grid-cols-2 gap-4">
@@ -371,7 +402,9 @@ const Signup = () => {
               >
                 <UserCheck className="size-8 mx-auto mb-2" />
                 <div className="font-medium">Job Seeker</div>
-                <div className="text-xs text-gray-500">Looking for opportunities</div>
+                <div className="text-xs text-gray-500">
+                  Looking for opportunities
+                </div>
               </button>
               <button
                 type="button"
@@ -423,7 +456,10 @@ const Signup = () => {
           <div className="text-center">
             <p className="text-gray-600">
               Already have an account?
-              <a href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
+              <a
+                href="/login"
+                className="text-blue-600 hover:text-blue-700 font-medium"
+              >
                 Sign in here
               </a>
             </p>

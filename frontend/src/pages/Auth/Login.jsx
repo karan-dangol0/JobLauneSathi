@@ -28,8 +28,6 @@ const Login = () => {
     success: false,
   });
 
-  
-
   const validatePassword = (password) => {
     if (!password.trim()) return "Password is required";
     return "";
@@ -79,26 +77,28 @@ const Login = () => {
       const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
         email: formData.email,
         password: formData.password,
-        rememberMe: formData.rememberMe
+        rememberMe: formData.rememberMe,
       });
 
-      setFormState(prev => ({
+      setFormState((prev) => ({
         ...prev,
         loading: false,
         success: true,
-        errors: {}
+        errors: {},
       }));
       const { token, role } = response.data;
       if (token) {
         login(response.data, token);
         setTimeout(() => {
-          window.location.href = role === "employer" ? "employer-dashboard" : "/find-jobs"; 
+          window.location.href =
+            role === "employer" ? "employer-dashboard" : "/find-jobs";
         }, 2000);
       }
 
       // redirect based on user role
       setTimeout(() => {
-        const redirectPath = user.role === "employer" ? "/employer-dashboard" : "/find-jobs";
+        const redirectPath =
+          user.role === "employer" ? "/employer-dashboard" : "/find-jobs";
         window.location.href = "/";
       }, 1500);
     } catch (error) {

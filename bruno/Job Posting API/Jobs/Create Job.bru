@@ -1,0 +1,38 @@
+meta {
+  name: Create Job
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/jobs
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMzM4OTM1ZjUxZTYwNmFiNGZiYjU1NyIsImlhdCI6MTc4MTc4MzQ2NywiZXhwIjoxNzg2OTY3NDY3fQ.yxJplGWXVZ4LzAtAxkAk5jXqrnpV2EpBrcVycBv53Is
+}
+
+body:json {
+  {
+    "title": "Backend engineer",
+    "description": "Build api ",
+    "requirements": "React, JavaScript, REST APIs",
+    "location": "Kathmandu",
+    "category": "Engineering",
+    "type": "Full-Time",
+    "salaryMin": 50000,
+    "salaryMax": 90000
+  }
+}
+
+docs {
+  Creates a job.
+  
+  Requires an authenticated user with role `employer`.
+}

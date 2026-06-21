@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import SignUp from "./pages/Auth/SignUp";
@@ -14,8 +19,9 @@ import JobPosting from "./pages/Employer/JobPosting";
 import ManageJobs from "./pages/Employer/ManageJobs";
 import ApplicationViewer from "./pages/Employer/ApplicationViewer";
 import EmployerProfilePage from "./pages/Employer/EmployerProfilePage";
-import JobPostingForm from "./pages/Employer/JobPostingForm";
+import EditProfileDetails from "./pages/Employer/EditProfileDetails";
 import { AuthProvider } from "./context/AuthContext";
+import JobPostingForm from "./pages/Employer/JobPostingForm";
 
 const App = () => {
   return (
@@ -40,6 +46,7 @@ const App = () => {
             <Route path="/manage-jobs" element={<ManageJobs />} />
             <Route path="/applicants" element={<ApplicationViewer />} />
             <Route path="/company-profile" element={<EmployerProfilePage />} />
+            <Route path="/edit-company-profile" element={<EditProfileDetails />} />
           </Route>
 
           {/* Catch All Routes */}

@@ -1,0 +1,38 @@
+meta {
+  name: Update Job
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/api/jobs/{{jobId}}
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "title": "Senior Frontend Developer",
+    "description": "Build and maintain React user interfaces.",
+    "requirements": "React, JavaScript, REST APIs, Tailwind CSS",
+    "location": "Kathmandu",
+    "category": "Engineering",
+    "type": "Full-Time",
+    "salaryMin": 70000,
+    "salaryMax": 120000
+  }
+}
+
+docs {
+  Updates a job.
+
+  Requires the authenticated employer to own the job.
+}

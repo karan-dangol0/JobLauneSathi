@@ -1,0 +1,19 @@
+meta {
+  name: Get My Saved Jobs
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/save-jobs/my
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Lists saved jobs for the authenticated user.
+}

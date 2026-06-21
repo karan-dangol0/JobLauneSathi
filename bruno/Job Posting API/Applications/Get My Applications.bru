@@ -1,0 +1,19 @@
+meta {
+  name: Get My Applications
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/applications/my
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Lists applications for the authenticated jobseeker.
+}

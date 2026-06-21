@@ -84,12 +84,16 @@ export const getEmployerAnalytics = async (req, res) => {
     const hiredTrend = getTrend(hiredLast7, hiredPrev7);
 
     // === DATA ===
-    const recentJobs = await Application.find({ company: companyId })
+    const recentJobs = await Job.find({ company: companyId })
       .sort({ createdAt: -1 })
       .limit(5)
+      .lean();
+    const recentApplications = await Application.find({ job: { $in: jobIds } })
       .populate("applicant", "name email avatar")
-          .populate("job", "title");
-      const recentApplications = await Application.find({ job: { $in: jobIds } });
+      .populate("job", "title")
+      .sort({ updatedAt: -1 })
+      .limit(5)
+      .lean();
     res.json({
       counts: {
         totalActiveJobs,

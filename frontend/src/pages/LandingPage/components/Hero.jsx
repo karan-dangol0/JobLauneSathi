@@ -21,10 +21,12 @@ const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-                      className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight pt-10"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight pt-10"
           >
             Find your Dream Job or
-            <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mt-2">Perfect Hire</span>
+            <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mt-2">
+              Perfect Hire
+            </span>
           </motion.h1>
           {/* sub-heading */}
 
@@ -42,7 +44,8 @@ const Hero = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }} className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
           >
             <motion.button
               whileHover={{ scale: 1.02 }}
@@ -71,7 +74,7 @@ const Hero = () => {
             </motion.button>
           </motion.div>
 
-                  {/* Stats */}
+          {/* Stats */}
           {/*<motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -99,8 +102,10 @@ const Hero = () => {
       {/* Subtle BackGround ELements     */}
       <div className="absolute inset-0  overflow-hidden pointer-events-none ">
         <div className="absolute top-20 left-20 size-32 bg-blue-100 rounded-full blur-3xl opacity-30" />
-              <div className="absolute bottom-20 right-10 size-40 bg-purple-100 rounded-full blue3xl
-        opacity-30" />
+        <div
+          className="absolute bottom-20 right-10 size-40 bg-purple-100 rounded-full blue3xl
+        opacity-30"
+        />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 size-96 bg-linear-to-r from-blue-50 to-purple-50 rounded-full blur-3xl opacity-20" />
       </div>
     </section>

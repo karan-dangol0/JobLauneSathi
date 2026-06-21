@@ -1,0 +1,19 @@
+meta {
+  name: Toggle Close Job
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/api/jobs/{{jobId}}/toggle-close
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Toggles `isClosed` for a job owned by the authenticated employer.
+}

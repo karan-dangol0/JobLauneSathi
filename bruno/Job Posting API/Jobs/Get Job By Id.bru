@@ -1,0 +1,21 @@
+meta {
+  name: Get Job By Id
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/jobs/{{jobId}}
+  body: none
+  auth: none
+}
+
+params:query {
+  userId:
+}
+
+docs {
+  Gets a single job by id.
+
+  Optional `userId` query param adds `applicationStatus`.
+}

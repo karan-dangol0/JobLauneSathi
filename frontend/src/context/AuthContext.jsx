@@ -26,9 +26,9 @@ export const AuthProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       const userStr = localStorage.getItem("user");
 
-        if (token && userStr) {
-            const userData = JSON.parse(userStr);
-            setUser(userData);
+      if (token && userStr) {
+        const userData = JSON.parse(userStr);
+        setUser(userData);
         setIsAuthenticated(true);
       }
     } catch (error) {
@@ -54,10 +54,10 @@ export const AuthProvider = ({ children }) => {
     window.location.href = "/";
   };
 
-    const updateUser = (updatedUserData) => {
-        const newUserData = { ...user, ...updatedUserData };
+  const updateUser = (updatedUserData) => {
+    const newUserData = { ...user, ...updatedUserData };
     localStorage.setItem("user", JSON.stringify(newUserData));
-    setUser(updatedUserData);
+    setUser(newUserData);
   };
 
   const value = {

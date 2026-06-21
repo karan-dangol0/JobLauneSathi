@@ -1,0 +1,19 @@
+meta {
+  name: Get Application By Id
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/applications/{{applicationId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Gets one application by id.
+}

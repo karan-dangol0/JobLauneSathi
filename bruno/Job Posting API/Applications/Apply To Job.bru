@@ -1,0 +1,21 @@
+meta {
+  name: Apply To Job
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/applications/{{jobId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Applies to a job.
+
+  Requires an authenticated user with role `jobseeker`.
+}

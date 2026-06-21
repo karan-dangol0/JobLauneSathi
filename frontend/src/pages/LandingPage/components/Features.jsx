@@ -53,19 +53,28 @@ const Features = () => {
 
           <div className="">
             <div className="text-center mb-12">
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">For Employers</h3>
+              <h3 className="text-3xl font-bold text-gray-900 mb-4">
+                For Employers
+              </h3>
               <div className="w-24 h-1 bg-linear-to-r from-purple-500 to-purple-600 mx-auto rounded-full " />
             </div>
 
             <div className="space-y-8">
               {employerFeatures.map((feature, index) => (
-                <div className="group flex items-center space-x-4 p-6 rounded-2xl hover:bg-purple-50 transition-all  duration-300  cursor-pointer" key={index}>
+                <div
+                  className="group flex items-center space-x-4 p-6 rounded-2xl hover:bg-purple-50 transition-all  duration-300  cursor-pointer"
+                  key={index}
+                >
                   <div className="shrink-0 size-12 bg-purple-100  rounded-xl flex justify-center items-center group-hover:bg-purple-200 transition-colors ">
                     <feature.icon className="size-6 text-purple-600" />
                   </div>
                   <div className="">
-                    <h4 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h4>
-                    <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                    <h4 className="text-xl font-semibold text-gray-900 mb-2">
+                      {feature.title}
+                    </h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      {feature.description}
+                    </p>
                   </div>
                 </div>
               ))}
