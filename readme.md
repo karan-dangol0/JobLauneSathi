@@ -50,8 +50,7 @@ The repository is organized as a monorepo with the following structure:
 
 ## Database ER diagram
 
-![alt text]({ER}.png)
-
+![alt text](image.png)
 ## Getting Started
 
 ### Prerequisites
